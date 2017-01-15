@@ -5,6 +5,7 @@ var c;
 var astronaut;
 var walls;
 
+
 var quitButton;
 var fullButton;
 var fullButton_scale = 0.3;
@@ -196,6 +197,7 @@ function goFull() {
  }
 
  function create2(){
+    game.time.desiredFps = 60;
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -205,17 +207,29 @@ function goFull() {
    
     walls = game.add.group();
     
-    walls.enableBody=true;   
+    //walls.physicsType = Phaser.SPRITE;
+
     game.physics.arcade.enable(walls);
+    walls.enableBody=true;
+    walls.immovable=true;
+    //walls.body.collideWorldBounds = true;
+
+
 
     astronaut=game.add.sprite(520,520,'astronaut');
     astronaut.scale.setTo(1.2,1.2 );
-    astronaut.enableBody=true;
+    astronaut.physicsType = Phaser.SPRITE;
     game.physics.arcade.enable(astronaut);
+    astronaut.enableBody=true;
+    //astronaut.body.collideWorldBounds = true;
+
+
     astronaut.animations.add('left', [3,4,5], 10, true);
     astronaut.animations.add('right', [6,7,8], 10, true);
     astronaut.animations.add('up', [9,10,11], 10, true);
     astronaut.animations.add('down', [0,1,2], 10, true);
+
+
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
@@ -341,14 +355,18 @@ function goFull() {
     fullButton.scale.setTo(fullButton_scale, fullButton_scale);
     //w1.scale.setTo(1.5,1.5);
 
+    //c.physicsType = Phaser.SPRITE;
+    c.enableBody=true;   
+    game.physics.arcade.enable(c);
+    c.immovable = true;
+    //c.body.collideWorldBounds = true;
 
-    c.body.immovable = true;
-    c.body.moves = false;
 
  }
 
  function update2(){
-    game.physics.arcade.collide(astronaut, walls);
+    game.physics.arcade.collide(astronaut,walls);
+
 
     //  Reset the players velocity (movement)
     astronaut.body.velocity.x = 0;
